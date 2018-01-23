@@ -7,9 +7,9 @@ public class transover {
 
     public static void main (String[] args) throws UnsupportedFlavorException, InterruptedException, IOException {
 
-        gui arayüz;
+        gui arayuz;
 
-        arayüz = new gui();
+        arayuz = new gui();
 
 
 

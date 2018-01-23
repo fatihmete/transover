@@ -69,8 +69,8 @@ public class gui extends JFrame {
 
        JButton dugme = new JButton();
        JButton dugmeKapat = new JButton();
-       dugmeKapat.setText("Kapat");
-       dugme.setText("Gizle");
+       dugmeKapat.setText("Close");
+       dugme.setText("Hide");
        dugme.setBackground(Color.orange);
        dugmeKapat.setBackground(Color.orange);
 
@@ -133,7 +133,7 @@ public class gui extends JFrame {
            //System.out.println("Kopyalanan Metin: " + getClipboard());
             //System.out.println("Metin: " + metin);
 
-            if (metin.equals(getClipboard())==false) {
+            if (metin.equals(getClipboard())==false && !isVisible()) {
 
                 //System.out.println("metin ile kopyalanan metin farklı");
                 PointerInfo fareKonumu = MouseInfo.getPointerInfo();
