@@ -1,4 +1,4 @@
-package transover.app;
+package transover.fatihmete;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,19 +12,26 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class gui extends JFrame {
+public class transOver extends JFrame {
 
     public static final int JFRAME_WIDTH = 400;
     public static final int JFRAME_HEIGHT = 300;
     public static JTextPane metinalanı;
     public String metin = getClipboard();
 
+    public static void main(String[] args)throws UnsupportedFlavorException, InterruptedException, IOException {
 
-    public gui() throws UnsupportedFlavorException, InterruptedException, IOException {
+        transOver arayuz;
 
-       setGui();
-       setVisible(false);
-       kopyalananMetniTakipEt();
+        arayuz = new transOver();
+    }
+
+
+    public transOver() throws UnsupportedFlavorException, InterruptedException, IOException {
+
+        setGui();
+        setVisible(false);
+        kopyalananMetniTakipEt();
 
 
     }
@@ -35,8 +42,6 @@ public class gui extends JFrame {
 
         Container icerikpaneli;
 
-
-        setTitle("Transover");
         setSize(JFRAME_WIDTH ,JFRAME_HEIGHT);
         setUndecorated(true);
         setResizable(false);
