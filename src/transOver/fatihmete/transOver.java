@@ -28,11 +28,10 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Properties;
 
 public class transOver extends JFrame {
 
@@ -40,6 +39,10 @@ public class transOver extends JFrame {
     private static final int JFRAME_HEIGHT = 300;
     private static JTextPane translatedTextPane;
     private String textToBeTranslate = getClipboard();
+    private static String sourceLanguage="";
+    private static String targetLanguage="";
+    private Properties prop = new Properties();
+    private InputStream input = null;
 
     public static void main(String[] args) throws UnsupportedFlavorException, InterruptedException, IOException {
 
@@ -50,6 +53,7 @@ public class transOver extends JFrame {
     private transOver() throws UnsupportedFlavorException, InterruptedException, IOException {
 
         setGui();
+        setConfig();
         trackTextCopiedToClipboard();
 
     }
@@ -106,13 +110,31 @@ public class transOver extends JFrame {
 
 
     }
+    private void setConfig() throws IOException {
 
+        try {
+            input = new FileInputStream("config.properties");
+
+            prop.load(input);
+
+            sourceLanguage = prop.getProperty("sourceLanguage");
+            targetLanguage = prop.getProperty("targetLanguage");
+
+        }catch (IOException e){
+            //Default language
+            e.printStackTrace();
+            sourceLanguage = "en";
+            targetLanguage = "en";
+        }
+        // get the property value and print it out
+
+    }
     private void translate() {
         URL url = null;
 
         System.setProperty("http.agent", "Chrome");
         try {
-            url = new URL("https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=tr&dt=t&q=" + getClipboard());
+            url = new URL("https://translate.googleapis.com/translate_a/single?client=gtx&sl="+sourceLanguage+"&tl="+targetLanguage+"&dt=t&q=" + getClipboard());
 
         } catch (UnsupportedFlavorException | IOException e) {
 
