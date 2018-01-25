@@ -129,18 +129,11 @@ public class transOver extends JFrame {
         // get the property value and print it out
 
     }
-    private void translate() {
+    private void translate() throws UnsupportedFlavorException, IOException {
         URL url = null;
 
         System.setProperty("http.agent", "Chrome");
-        try {
-            url = new URL("https://translate.googleapis.com/translate_a/single?client=gtx&sl="+sourceLanguage+"&tl="+targetLanguage+"&dt=t&q=" + getClipboard());
-
-        } catch (UnsupportedFlavorException | IOException e) {
-
-            e.printStackTrace();
-
-        }
+        url = new URL("https://translate.googleapis.com/translate_a/single?client=gtx&sl="+sourceLanguage+"&tl="+targetLanguage+"&dt=t&q=" + getClipboard());
 
 
         assert url != null;
@@ -169,7 +162,24 @@ public class transOver extends JFrame {
             if (!textToBeTranslate.equals(getClipboard()) && !isVisible()) {
 
                 PointerInfo pointerPosition = MouseInfo.getPointerInfo();
-                setLocation(pointerPosition.getLocation().x + 50, pointerPosition.getLocation().y + 50);
+                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+                int pointerXLocation = pointerPosition.getLocation().x;
+                int pointerYLocation = pointerPosition.getLocation().y;
+
+                int screenWidth = (int) screenSize.getWidth();
+                int screenHeight = (int) screenSize.getHeight();
+
+
+                if(pointerXLocation>(screenWidth-JFRAME_WIDTH)){
+
+                    pointerXLocation = screenWidth-JFRAME_WIDTH;
+                }
+                if(pointerYLocation>(screenHeight-JFRAME_HEIGHT)){
+
+                    pointerYLocation = screenHeight-JFRAME_HEIGHT;
+                }
+                setLocation(pointerXLocation, pointerYLocation);
                 translate();
                 textToBeTranslate = getClipboard();
                 setVisible(true);
@@ -179,15 +189,23 @@ public class transOver extends JFrame {
 
     }
 
-    private static String getClipboard() throws IOException, UnsupportedFlavorException {
+    private static String getClipboard() {
 
-        String data = (String) Toolkit.getDefaultToolkit()
-                .getSystemClipboard().getData(DataFlavor.stringFlavor);
-        data = data.replace(" ", "%20");
-        data = data.replace("\n", "%20");
-        data = data.replace("\t", "%20");
+       try{
 
-        return data;
+           String data = (String) Toolkit.getDefaultToolkit()
+                   .getSystemClipboard().getData(DataFlavor.stringFlavor);
+           data = data.replace(" ", "%20");
+           data = data.replace("\n", "%20");
+           data = data.replace("\t", "%20");
+           return data;
+
+       }catch (IOException | UnsupportedFlavorException e){
+
+           System.out.println("Read clipboard error.");
+           return " ";
+       }
+
 
     }
 
